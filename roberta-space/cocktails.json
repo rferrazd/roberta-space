@@ -1,1 +1,4 @@
-[{"id":0,"name":" Coffee","ingredients":"Coffee","instructions":"Make Coffee","public":true},{"id":1,"name":" Tea","ingredients":"Tea, Water","instructions":"Boil Water, add tea","public":false},{"id":2,"name":" Carrot Cake","ingredients":"Carrots, Cake","instructions":"Make Carrot Cake","public":true},{"id":3,"name":" Name","ingredients":"Ingredients","instructions":"Instructions","public":true}]
+[{"id":0,"name":"Negroni","family":"spirit-forward","base_spirit":"gin","sweet_part":"sweet vermouth","sour_part":"None","bitter_part":"Campari","method":"stir","public":true},
+{"id":1,"name":"Margarita","family":"sour","base_spirit":"tequila","sweet_part":"Cointreau liquour","sour_part":"lime","bitter_part":"None","method":"shaken","public":true},
+{"id":2,"name":"Caipirinha","family":"cobbler","base_spirit":"cachaça","sweet_part":"sugar cube","sour_part":"lime","bitter_part":"None","method": "muddled","public":true},
+{"id":3,"name":"Whisky highball","family":"highball","base_spirit":"whisky","sweet_part":"None","sour_part":"None","bitter_part":"None","method": "stir","public":true}]

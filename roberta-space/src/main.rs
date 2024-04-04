@@ -1,4 +1,5 @@
 // from class 04/02/2024
+// updated version
 use libp2p::{
     core::upgrade,
     floodsub::{Floodsub, FloodsubEvent, Topic},
@@ -32,8 +33,12 @@ static TOPIC: Lazy<Topic> = Lazy::new(|| Topic::new("cocktails"));
 struct Cocktail {
     id: usize,
     name: String,
-    ingredients: String,
-    instructions: String,
+    family: String,
+    base_spirit: String,
+    sweet_part: String,
+    sour_part: String,
+    bitter_part: String,
+    method: String,
     public: bool,
 }
 
@@ -145,7 +150,7 @@ impl NetworkBehaviourEventProcess<MdnsEvent> for CocktailBehaviour {
     }
 }
 
-async fn create_new_cocktail(name: &str, ingredients: &str, instructions: &str) -> Result<()> {
+async fn create_new_cocktail(name: &str, family: &str, base_spirit: &str, sweet_part: &str, sour_part: &str, bitter_part: &str, method: &str) -> Result<()> {
     let mut local_cocktails = read_local_cocktails().await?;
     let new_id = match local_cocktails.iter().max_by_key(|r| r.id) {
         Some(v) => v.id + 1,
@@ -154,16 +159,23 @@ async fn create_new_cocktail(name: &str, ingredients: &str, instructions: &str) 
     local_cocktails.push(Cocktail {
         id: new_id,
         name: name.to_owned(),
-        ingredients: ingredients.to_owned(),
-        instructions: instructions.to_owned(),
+        family: family.to_owned(),
+        base_spirit: base_spirit.to_owned(),
+        sweet_part: sweet_part.to_owned(),
+        sour_part: sour_part.to_owned(),
+        bitter_part: bitter_part.to_owned(),
+        method: method.to_owned(),
         public: false,
     });
     write_local_cocktails(&local_cocktails).await?;
 
     info!("Created cocktail:");
     info!("Name: {}", name);
-    info!("Ingredients: {}", ingredients);
-    info!("Instructions:: {}", instructions);
+    info!("Family: {}", family);
+    info!("Base spirit:: {}", base_spirit);
+    info!("Sweet part: {}", sweet_part);
+    info!("Sour part: {}", sour_part);
+    info!("Bitter part: {}", bitter_part);
 
     Ok(())
 }
@@ -322,12 +334,16 @@ async fn handle_create_cocktail(cmd: &str) {
     if let Some(rest) = cmd.strip_prefix("create r") {
         let elements: Vec<&str> = rest.split("|").collect();
         if elements.len() < 3 {
-            info!("too few arguments - Format: name|ingredients|instructions");
+            info!("too few arguments - Format: name|family|base spirit|sweet part|sour part|bitter part|method");
         } else {
             let name = elements.get(0).expect("name is there");
-            let ingredients = elements.get(1).expect("ingredients is there");
-            let instructions = elements.get(2).expect("instructions is there");
-            if let Err(e) = create_new_cocktail(name, ingredients, instructions).await {
+            let family = elements.get(1).expect("family is there");
+            let base_spirit = elements.get(2).expect("base spirit is there");
+            let sweet_part = elements.get(3).expect("sweet part is there");
+            let sour_part = elements.get(4).expect("sour part is there");
+            let bitter_part = elements.get(5).expect("bitter part is there");
+            let method = elements.get(6).expect("method is there");
+            if let Err(e) = create_new_cocktail(name, family, base_spirit, sweet_part, sour_part, bitter_part, method).await {
                 error!("error creating cocktail: {}", e);
             };
         }
